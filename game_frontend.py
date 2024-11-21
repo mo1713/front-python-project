@@ -21,12 +21,6 @@ class GameUI:
 
     def setup_ui(self):
         # Add back button to homepage
-        with ui.row().classes('w-full items-center gap-4 mb-6'):
-            ui.link(
-                '/'
-            ).classes('text-pink-600')
-            ui.label('Word Scramble Game').classes('text-2xl font-bold text-pink-600')
-
         with ui.column().classes('w-full'):
             self._create_header()
             self._create_mode_selection()
@@ -34,10 +28,10 @@ class GameUI:
             self._create_game_interface()
 
     def _create_header(self):
-        ui.label("Trò Chơi Sắp Xếp Lại Từ").classes('text-3xl font-bold mb-4')
+        ui.label("Word Scamble Game").classes('text-2xl text-pink-600 font-bold mb-4')
         with ui.row().classes('gap-4 mb-4'):
-            ui.button("Album của tôi", on_click=lambda: self.show_mode_options('album')).classes('bg-blue-500')
-            ui.button("Chủ đề có sẵn", on_click=lambda: self.show_mode_options('topic')).classes('bg-green-500')
+            ui.button("Self Album", on_click=lambda: self.show_mode_options('album')).classes('bg-pink-600 hover:bg-pink-800')
+            ui.button("Flashcard Topic", on_click=lambda: self.show_mode_options('topic')).classes('bg-pink-600 hover:bg-pink-800 ')
 
     def _create_mode_selection(self):
         self.mode_container = ui.column().classes('w-full mb-4')
@@ -45,22 +39,22 @@ class GameUI:
     def _create_game_controls(self):
         self.game_controls = ui.column().classes('w-full mb-4')
         with self.game_controls:
-            ui.button("Bắt đầu", on_click=self.start_new_game).classes('bg-green-500')
-            ui.button("Chơi lại", on_click=self.reset_game).classes('bg-yellow-500')
+            ui.button("Start", on_click=self.start_new_game).classes('bg-pink-500')
+            ui.button("Replay", on_click=self.reset_game).classes('bg-pink-500')
         self.game_controls.set_visibility(False)
 
     def _create_game_interface(self):
         self.game_interface = ui.column().classes('w-full')
         with self.game_interface:
-            self.score_label = ui.label(f"Điểm: 0").classes('text-lg mb-2')
+            self.score_label = ui.label(f"Score: 0").classes('text-lg mb-2')
             self.word_display = ui.label().classes('text-xl mb-2')
             self.hint_label = ui.label().classes('text-sm text-gray-500 mb-2')
             
             with ui.row().classes('gap-2'):
-                self.input_box = ui.input(placeholder='Nhập từ của bạn...').classes('w-64')
-                ui.button("Kiểm tra", on_click=self.check_word).classes('bg-blue-500')
-                ui.button("Bỏ qua", on_click=self.skip_word).classes('bg-gray-500')
-                ui.button("Kết thúc Game", on_click=self.game_logic.save_review_album).classes('bg-gray-500')
+                self.input_box = ui.input(placeholder='Enter word...').classes('w-64')
+                ui.button("Check", on_click=self.check_word).classes('bg-pink-500')
+                ui.button("Skip", on_click=self.skip_word).classes('bg-pink-500')
+                ui.button("Finish", on_click=self.game_logic.save_review_album).classes('bg-pink-500')
         self.game_interface.set_visibility(False)
 
 
@@ -71,14 +65,14 @@ class GameUI:
                       else list(self.game_logic.get_topics()))
             
             if mode == 'album' and not options:
-                ui.label("Bạn chưa có album nào").classes('text-red-500')
+                ui.label("").classes('text-red-500')
                 return
 
             ui.select(
-                label="Chọn " + ("album" if mode == 'album' else "chủ đề"),
+                label="Choose " + ("album" if mode == 'album' else "topic"),
                 options=options,
                 on_change=lambda e: self.on_source_change(e.value, mode == 'album')
-            ).classes('w-full max-w-xs mb-4')
+            ).classes('w-full max-w-xs mb-4 ')
 
     def on_source_change(self, source, is_album):
         if self.game_logic.set_word_source(source, is_album):
@@ -90,35 +84,35 @@ class GameUI:
     def start_new_game(self):
         scrambled_word, word_length = self.game_logic.get_next_word()
         if not scrambled_word:
-            ui.notify("Vui lòng chọn nguồn từ vựng", color="warning")
+            ui.notify("Please choose a word source", color="warning")
             return
         
         self.game_interface.set_visibility(True)
-        self.word_display.set_text(f"Sắp xếp lại: {scrambled_word}")
-        self.hint_label.set_text(f"Độ dài: {word_length} ký tự")
+        self.word_display.set_text(f"Rearrange: {scrambled_word}")
+        self.hint_label.set_text(f"Length of word: {word_length} charaters")
         self.input_box.value = ""
 
     def check_word(self):
         is_correct, result = self.game_logic.check_answer(self.input_box.value.strip())
         if result == "empty":
-            ui.notify("Vui lòng nhập từ", color="warning")
+            ui.notify("Please enter word", color="warning")
         elif is_correct:
-            ui.notify("Chính xác! +1 điểm", color="success")
-            self.score_label.set_text(f"Điểm: {self.game_logic.score}")
+            ui.notify("Correct! +1 point", color="success")
+            self.score_label.set_text(f"Score: {self.game_logic.score}")
             
         else:
-            ui.notify(f"Sai rồi! Đáp án đúng: {result}", color="error")
+            ui.notify(f"Wrong! Correct answer: {result}", color="error")
             
         self.start_new_game()
 
     def skip_word(self):
         correct_word = self.game_logic.skip_current_word()
-        ui.notify(f"Từ đúng là: {correct_word}", color="warning")
+        ui.notify(f"Correct word: {correct_word}", color="warning")
         self.start_new_game()
 
     def reset_game(self):
         self.game_logic.reset_game()
-        self.score_label.set_text("Điểm: 0")
+        self.score_label.set_text("Score: 0")
         self.start_new_game()
     
 
@@ -134,18 +128,11 @@ class ReviewUI:
         self.update_review_section()
         self._create_review_section()  
         
-    def setup_ui(self):
-        with ui.row().classes('w-full items-center gap-4 mb-6'):
-            ui.link( 
-                '/'
-            ).classes('text-pink-600')
-            ui.label('Review Cards').classes('text-2xl font-bold text-pink-600')
-        
         # Add your review interface here
     def _create_review_section(self):
         self.review_section = ui.column().classes('w-full mt-4')
         with self.review_section:
-            ui.label("Từ cần ôn tập").classes('text-xl font-bold mb-2')
+            ui.label("Revision").classes('text-2xl text-pink-600 font-bold mb-2')
             self.review_count_label = ui.label().classes('text-sm text-gray-600 mb-2')
             
             self.flashcard = ui.card().classes('w-full h-48 cursor-pointer mb-4')
@@ -153,29 +140,29 @@ class ReviewUI:
                 self.card_content = ui.label().classes('text-xl text-center w-full h-full flex items-center justify-center')
             
             with ui.row().classes('w-full justify-center gap-4'):
-                ui.button('←', on_click=self.prev_card).classes('bg-gray-500')
-                ui.button('Lật thẻ', on_click=self.flip_card).classes('bg-blue-500')
-                ui.button('→', on_click=self.next_card).classes('bg-gray-500')
+                ui.button('←', on_click=self.prev_card).classes('bg-pink-500')
+                ui.button('Flip', on_click=self.flip_card).classes('bg-pink-500')
+                ui.button('→', on_click=self.next_card).classes('bg-pink-500')
             
             with ui.row().classes('w-full justify-center gap-4 mt-4'):
-                ui.button('Đã nhớ', on_click=self.mark_as_remembered).classes('bg-green-500')
-                ui.button('Chưa nhớ', on_click=self.next_card).classes('bg-red-500')
-                ui.button('Kết thúc ôn tâp', on_click = self.review_logic.save_review_album).classes('bg-red-500')
+                ui.button('Remembered', on_click=self.mark_as_remembered).classes('bg-pink-500')
+                ui.button('Not remember yet', on_click=self.next_card).classes('bg-pink-500')
+                ui.button('Finish Revision', on_click = self.review_logic.save_review_album).classes('bg-pink-500')
         #self.review_section.set_visibility(False)
         self.update_review_section()
     
     def update_review_section(self):
         if self.review_count_label:
             count = self.review_logic.get_review_count()
-            self.review_count_label.set_text(f'Còn {count} từ cần ôn tập')
+            self.review_count_label.set_text(f'{count} revision word left')
     
         if self.card_content and self.flashcard:
             card_content = self.review_logic.get_current_card()
             if card_content:
                 self.card_content.set_text(card_content)
-                self.flashcard.style('background-color: white; color: black')
+                self.flashcard.style('background-color: white; color: pink')
             else:
-                self.card_content.set_text("Không còn từ nào cần ôn tập")
+                self.card_content.set_text("No revision word left")
 
 
     def flip_card(self):
@@ -193,7 +180,7 @@ class ReviewUI:
     def mark_as_remembered(self):
         removed_word = self.review_logic.mark_as_remembered()
         if removed_word:
-            ui.notify(f'Đã xóa "{removed_word}" khỏi danh sách ôn tập', color="success")
+            ui.notify(f'Removed "{removed_word}" from revision word list', color="success")
             self.update_review_section()
 
 
@@ -210,9 +197,6 @@ class Gamefront:
                 ui.label('FLASHCARDS').classes('text-2xl font-bold text-pink-600') 
             
             with ui.row().style('justify-content: center; margin: 10px 0;gap: 10px; flex-wrap: wrap;'): 
-                ui.link('Flashcards Study', '/flashcards').classes(
-                    'w-full bg-pink-600 hover:bg-pink-800 text-white font-semibold py-2 rounded-lg shadow-md text-center no-underline'
-                )
                 ui.link('Game', '/game').classes(
                     'w-full bg-pink-600 hover:bg-pink-800 text-white font-semibold py-2 rounded-lg shadow-md text-center no-underline'
                 )

@@ -4,9 +4,9 @@ import json
 from dictionary_frontend import DictionaryUI
 from frontend_flash import FlashcardStudyPanel
 from dictation import Dictation
-#from game_frontend import Gamefront
-from read_frontend import ReadingPlatform
-from read_backend import StoryManager
+from game_frontend import Gamefront, GameUI, ReviewUI
+#from read_frontend import ReadingPlatform
+#from read_backend import StoryManager
 
 class DashboardApp:
     def __init__(self):
@@ -181,7 +181,7 @@ class DashboardApp:
         @ui.page(url)
         def page():
             # Apply a style to the body
-            with ui.image("D:/Web/python_project/7104f07f28a93cdab92746e3a617ad1c.jpg").style(
+            with ui.image("D:/python_project/7104f07f28a93cdab92746e3a617ad1c.jpg").style(
             'position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;'
             ):
               pass  
@@ -216,7 +216,6 @@ class DashboardApp:
         return self.create_flashcard_page
     def create_reading_page(self):
         # Placeholder function for the dictionary page
-        ReadingPlatform()
         return self.create_reading_page
     def create_dictation_page(self):
         # Placeholder function for the dictionary page
@@ -224,8 +223,10 @@ class DashboardApp:
         return self.create_dictation_page
     def create_game_page(self):
         # Placeholder function for the dictionary page
-        #Gamefront()
-        return self.create_process_page 
+        Gamefront()
+        GameUI()
+        ReviewUI()
+        return self.create_game_page 
 
 app = DashboardApp()
 

@@ -1,5 +1,6 @@
 from nicegui import ui
 from functools import partial
+from read_backend import StoryManager
 
 class ReadingPlatformUI:
     def __init__(self, story_manager, progress_manager):
