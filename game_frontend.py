@@ -194,7 +194,7 @@ class Gamefront:
         with ui.column().classes('w-full max-w-3xl mx-auto p-4'):
             with ui.row().classes('w-full items-center gap-4 mb-6'):
                 ui.icon('school', size='32px').classes('text-pink-600')
-                ui.label('FLASHCARDS').classes('text-2xl font-bold text-pink-600') 
+                ui.label('GAME').classes('text-2xl font-bold text-pink-600') 
             
             with ui.row().style('justify-content: center; margin: 10px 0;gap: 10px; flex-wrap: wrap;'): 
                 ui.link('Game', '/game').classes(

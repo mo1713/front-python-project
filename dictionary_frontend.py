@@ -123,7 +123,7 @@ class DictionaryUI:
             ui.notify(message, type='warning')
 
     def setup_ui(self):
-        self.container_ui =  ui.column().classes('w-full min-h-screen items-center p-4').style('background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);')
+        self.container_ui =  ui.column().style('width: 144%; height: 80px; padding: 20px;').classes('p-8 flex-1').style('background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);')
         with self.container_ui:
             with ui.row().classes('w-full items-center gap-4 mb-6'):
                 ui.icon('school', size='32px').classes('text-pink-600')

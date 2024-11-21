@@ -2,9 +2,9 @@ from nicegui import ui
 from typing import Dict, List
 import json
 from dictionary_frontend import DictionaryUI
-from frontend_flash import FlashcardStudyPanel
+from flashcard_frontend import FlashcardStudyPanel
 from dictation import Dictation
-from game_frontend import Gamefront, GameUI, ReviewUI
+from game_frontend import Gamefront, GameUI, ReviewUI,start_app
 #from read_frontend import ReadingPlatform
 #from read_backend import StoryManager
 
@@ -223,9 +223,7 @@ class DashboardApp:
         return self.create_dictation_page
     def create_game_page(self):
         # Placeholder function for the dictionary page
-        Gamefront()
-        GameUI()
-        ReviewUI()
+        start_app()
         return self.create_game_page 
 
 app = DashboardApp()
