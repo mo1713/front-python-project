@@ -5,8 +5,8 @@ from dictionary_frontend import DictionaryUI
 from flashcard_frontend import FlashcardStudyPanel
 from dictation import Dictation
 from game_frontend import Gamefront, GameUI, ReviewUI,start_app
-#from read_frontend import ReadingPlatform
-#from read_backend import StoryManager
+from read_frontend import ReadingUI
+from login_frontend import NiceGUIPages 
 
 class DashboardApp:
     def __init__(self):
@@ -77,7 +77,11 @@ class DashboardApp:
 
             # Bottom section
             with ui.row().classes('mt-auto p-4 w-full items-center justify-between'):
-                ui.button(icon='settings', color='pink').props('flat')
+                with ui.row().classes('mt-auto p-4 w-full items-center justify-between'):
+                    NiceGUIPages()
+                    ui.link('Sign Out', 'http://localhost:8080/login').classes(
+                    'btn btn-primary w-auto bg-pink-500 hover:bg-pink-700 text-white no-underline px-4 py-2 rounded'
+                        )
 
     def create_header(self):
         header_style = '''
@@ -106,10 +110,6 @@ class DashboardApp:
 
                 ui.button(icon='notifications', color='pink').props('flat round')
                 ui.avatar('User').style('background: linear-gradient(135deg, #6366f1, #a855f7);')
-                #with ui.interactive_image('https://picsum.photos/id/147/640/360'):
-                #    ui.button(on_click=lambda: ui.notify('thumbs up'), icon='thumb_up') \
-                #        .props('flat fab color=white') \
-                #        .classes('absolute bottom-0 left-0 m-2')
 
     def create_main_content(self):
         with ui.column().style('width: 144%; height: 80px; padding: 20px;').classes('p-8 flex-1').style('background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);'):
@@ -215,6 +215,7 @@ class DashboardApp:
         FlashcardStudyPanel()
         return self.create_flashcard_page
     def create_reading_page(self):
+        ReadingUI()
         # Placeholder function for the dictionary page
         return self.create_reading_page
     def create_dictation_page(self):

@@ -138,7 +138,7 @@ class ReviewUI:
             self.flashcard = ui.card().classes('w-full h-48 cursor-pointer mb-4')
             with self.flashcard:
                 self.card_content = ui.label().classes('text-xl text-center w-full h-full flex items-center justify-center')
-            
+            59+88
             with ui.row().classes('w-full justify-center gap-4'):
                 ui.button('←', on_click=self.prev_card).classes('bg-pink-500')
                 ui.button('Flip', on_click=self.flip_card).classes('bg-pink-500')
